@@ -10,7 +10,7 @@ console.log("Command: ", command);
 console.log('Yargs: ', argv);
 
 if (command === 'add') {
-    console.log('Adding new note');
+    notes.addNote(argv.title, argv.body);
 } else if (command === 'list') {
     notes.getAll();
 } else if (command === 'read') {
