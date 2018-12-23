@@ -1,1 +1,2 @@
-node_modules/*
+first-app/node_modules/*
+weather-app/node_modules/*
