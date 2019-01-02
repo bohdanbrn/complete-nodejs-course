@@ -1,5 +1,6 @@
-const request = require('request');
 const yargs = require('yargs');
+const mapquest = require('./mapquest/mapquest');
+
 
 const argv = yargs
     .options({
@@ -14,28 +15,13 @@ const argv = yargs
     .alias('help', 'h')
     .argv;
 
-let encodedAddress = encodeURIComponent(argv.a);
+let mapquestKey = 'Ai05Ul0OA7ODe2jdgajLESdCSCGknADa';
 
-request({
-    url: `http://www.mapquestapi.com/geocoding/v1/address?key=Ai05Ul0OA7ODe2jdgajLESdCSCGknADa&location=${encodedAddress}`,
-    json: true
-}, (error, response, body) => {
-    if (error) {
-        console.log('Unable to connect map service');
-    }
-    else if (body.info.statuscode !== 0) {
-        console.log('Illegal address for location');
-    }
-    else if (!body.results.length || !body.results[0].locations.length) {
-        console.log('Unable to find that address');
+mapquest.mapquestAddress(mapquestKey, argv.address, (errorMessage, results) => {
+    if (errorMessage) {
+        console.log(errorMessage);
     }
     else {
-        var location = body.results[0].providedLocation.location;
-        var lat = body.results[0].locations[0].latLng.lat;
-        var lng = body.results[0].locations[0].latLng.lng;
-
-        console.log(`Location: ${location}`);
-        console.log(`Latitude: ${lat}`);
-        console.log(`Longitude: ${lng}`);
+        console.log(JSON.stringify(results, undefined, 2));
     }
 });
