@@ -1,6 +1,6 @@
 const request = require('request');
 
-var mapquestAddress = (mapquestKey, address, callback) => {
+let mapquestAddress = (mapquestKey, address, callback) => {
     let encodedAddress = encodeURIComponent(address);
 
     request({
