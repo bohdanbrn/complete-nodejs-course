@@ -1,5 +1,6 @@
 const yargs = require('yargs');
 const axios = require('axios');
+const weather = require('./weather/weather');
 const argv = yargs
     .options({
         a: {
@@ -16,6 +17,7 @@ const argv = yargs
 let mapquestKey = 'Ai05Ul0OA7ODe2jdgajLESdCSCGknADa';
 let encodedAddress = encodeURIComponent(argv.address);
 let geocodeUrl = `http://www.mapquestapi.com/geocoding/v1/address?key=${mapquestKey}&location=${encodedAddress}`;
+let location = '';
 
 axios.get(geocodeUrl).then((response) => {
     if (response.data.info.statuscode !== 0) {
@@ -29,7 +31,9 @@ axios.get(geocodeUrl).then((response) => {
     let lat = response.data.results[0].locations[0].latLng.lat;
     let lng = response.data.results[0].locations[0].latLng.lng;
     let weatherUrl = `https://api.darksky.net/forecast/${darkSkyKey}/${lat},${lng}`;
-    console.log(response.data.results[0].providedLocation.location);
+    
+    location = response.data.results[0].providedLocation.location;
+    
     return axios.get(weatherUrl);
 }).then((response) => {
     let temperatureF = response.data.currently.temperature;
@@ -37,6 +41,9 @@ axios.get(geocodeUrl).then((response) => {
 
     let temperatureC = ((temperatureF - 32) / 1.8).toFixed(2);
     let apparentTemperatureC = ((apparentTemperatureF - 32) / 1.8).toFixed(2);
+
+    // store weather data to file
+    weather.storeWeather(location, temperatureC, apparentTemperatureC);
 
     console.log(`It's currently ${temperatureC} °C. It feels like ${apparentTemperatureC} °C`);
 }).catch((e) => {
@@ -48,3 +55,5 @@ axios.get(geocodeUrl).then((response) => {
     }
     console.log(e);
 });
+
+

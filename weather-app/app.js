@@ -17,19 +17,23 @@ const argv = yargs
 
 let mapquestKey = 'Ai05Ul0OA7ODe2jdgajLESdCSCGknADa';
 let darkSkyKey = '2b6789cb0c2f2d67555d2c52574f5e79';
+let location = '';
 
 mapquest.mapquestAddress(mapquestKey, argv.address, (errorMessage, results) => {
     if (errorMessage) {
         console.log(errorMessage);
     }
     else {
-        console.log(results.address);
+        location = results.address;
         
         weather.getWeather(darkSkyKey, results.lat, results.lng, (weatherErrorMessage, weatherResults) => {
             if (weatherErrorMessage) {
                 console.log(weatherErrorMessage);
             }
             else {
+                // store weather data to file
+                weather.storeWeather(location, weatherResults.temperature, weatherResults.apparentTemperature);
+
                 console.log(`It's currently ${weatherResults.temperature} °C. It feels like ${weatherResults.apparentTemperature} °C`);
             }
         });
