@@ -2,7 +2,6 @@ const yargs = require('yargs');
 const mapquest = require('./mapquest/mapquest');
 const weather = require('./weather/weather');
 
-
 const argv = yargs
     .options({
         a: {
@@ -31,7 +30,7 @@ mapquest.mapquestAddress(mapquestKey, argv.address, (errorMessage, results) => {
                 console.log(weatherErrorMessage);
             }
             else {
-                console.log(`It's currently ${weatherResults.temperature}. It feels like ${weatherResults.apparentTemperature}`);
+                console.log(`It's currently ${weatherResults.temperature} °C. It feels like ${weatherResults.apparentTemperature} °C`);
             }
         });
 

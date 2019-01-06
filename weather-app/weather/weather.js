@@ -7,9 +7,15 @@ let getWeather = (APIKey, lat, lng, callback) => {
         json: true
     }, (error, response, body) => {
         if (!error && response.statusCode == 200) {
+            let temperatureF = body.currently.temperature;
+            let apparentTemperatureF = body.currently.apparentTemperature;
+
+            let temperatureC = ((temperatureF - 32) / 1.8).toFixed(2);
+            let apparentTemperatureC = ((apparentTemperatureF - 32) / 1.8).toFixed(2);
+
             callback(undefined, {
-                temperature: body.currently.temperature,
-                apparentTemperature: body.currently.apparentTemperature
+                temperature: temperatureC,
+                apparentTemperature: apparentTemperatureC
             });
         }
         else {
