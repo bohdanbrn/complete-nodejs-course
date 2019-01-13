@@ -21,12 +21,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use((req, res, next) => {
-    res.render('maintenance.hbs', {
-        pageTitle: 'We will be right back',
-        welcomeMessage: 'The site is currently been updated, we be back soon'
-    });
-});
+// TODO (maintenance mode)
+// app.use((req, res, next) => {
+//     res.render('maintenance.hbs', {
+//         pageTitle: 'We will be right back',
+//         welcomeMessage: 'The site is currently been updated, we be back soon'
+//     });
+// });
 
 app.use(express.static(__dirname + "/public"));
 
@@ -48,6 +49,13 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about.hbs', {
         pageTitle: 'About Page'
+    });
+});
+
+app.get('/projects', (req, res) => {
+    res.render('projects.hbs', {
+        pageTitle: 'Projects Page',
+        message: 'Project page text would go here'
     });
 });
 
