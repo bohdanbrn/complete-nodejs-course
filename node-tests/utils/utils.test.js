@@ -7,11 +7,25 @@ it('should add two numbers', () => {
     expect(res).toBe(44).toBeA('number');
 });
 
+it('should asunc add two numbers', (done) => {
+    utils.assyncAdd(4, 3, (sum) => {
+        expect(sum).toBe(7).toBeA('number');
+        done();
+    });
+});
+
 
 it('should square number', () => {
     let res = utils.square(3);
 
     expect(res).toBe(9).toBeA('number');
+});
+
+it('should assync square number', (done) => {
+    utils.assyncSquare(3, (square) => {
+        expect(square).toBe(9).toBeA('number');
+        done();
+    });
 });
 
 // should verify first and last names are set
