@@ -10,6 +10,7 @@ const {todos, populateTodos, users, populateUsers} = require('./seed/seed');
 beforeEach(populateTodos);
 beforeEach(populateUsers);
 
+
 describe('POST /todos', () => {
     it('should create a new todo', (done) => {
         let text = 'Test todo text';
@@ -52,6 +53,7 @@ describe('POST /todos', () => {
     });
 });
 
+
 describe('GET /todos', () => {
     it('should get all todos', (done) => {
         request(app)
@@ -63,6 +65,7 @@ describe('GET /todos', () => {
             .end(done);
     });
 });
+
 
 describe('GET /todos/:id', () => {
     it('should get todo doc', (done) => {
@@ -90,6 +93,7 @@ describe('GET /todos/:id', () => {
             .end(done);
     });
 });
+
 
 describe('DELETE /todos/:id', () => {
     it('should remove a todo', (done) => {
@@ -297,4 +301,24 @@ describe('POST /users/login', () => {
                 }).catch((err) => done(err));
             });
     });
-})
+});
+
+
+describe('DELETE /users/me/token', () => {
+    it('should remove auth token on logout', (done) => {
+        request(app)
+            .delete('/users/me/token')
+            .set('x-auth', users[0].tokens[0].token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+
+                User.findById(users[0]._id).then((user) => {
+                    expect(user.tokens.length).toBe(0);
+                    done();
+                }).catch((err) => done(err));
+            });
+    })
+});
