@@ -39,7 +39,7 @@ const todos = [{
 const populateTodos = function (done) {
     this.timeout(3000); // A very long environment setup.
 
-    Todo.remove({}).then(() => {
+    Todo.deleteMany({}).then(() => {
         return Todo.insertMany(todos);
     }).then(() => done());
 };
@@ -47,7 +47,7 @@ const populateTodos = function (done) {
 const populateUsers = function(done) {
     this.timeout(3000); // A very long environment setup.
 
-    User.remove({}).then(() => {
+    User.deleteMany({}).then(() => {
         let userOne = new User(users[0]).save();
         let userTwo = new User(users[1]).save();
 
