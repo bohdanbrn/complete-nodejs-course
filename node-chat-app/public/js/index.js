@@ -11,11 +11,21 @@ socket.on('disconnect', function() {
 socket.on('newMessage', function(message) {
     console.log('New message', message);
 
-    var messages = jQuery('#messages');
     var li = jQuery('<li></li>');
     li.text(`${message.from}: ${message.text}`);
 
-    messages.append(li);
+    jQuery('#messages').append(li);
+});
+
+socket.on('newLocationMessage', function(message) {
+    let li = jQuery('<li></li>');
+    let a = jQuery('<a target="_blank">My curent location</a>')
+
+    li.text(`${message.from}: `);
+    a.attr('href', message.url);
+    li.append(a);
+
+    jQuery('#messages').append(li);
 });
 
 jQuery('#message-form').on('submit', function(event) {
